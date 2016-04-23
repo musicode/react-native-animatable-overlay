@@ -25,28 +25,35 @@ export default class AnimatableOverlay extends Component {
 
   static propTypes = {
     top: PropTypes.number,
+    right: PropTypes.number,
     bottom: PropTypes.number,
+    left: PropTypes.number,
     backgroundColor: PropTypes.string,
     activeOpacity: PropTypes.number,
     visible: PropTypes.bool,
     hideAnimation: PropTypes.object,
     showAnimation: PropTypes.object,
     statusBarAutoHidden: PropTypes.bool,
+    animateWithContent: PropTypes.bool,
     onPress: PropTypes.func,
-  };
+  }
 
   static defaultProps = {
     top: 0,
+    right: 0,
     bottom: 0,
+    left: 0,
     backgroundColor: '#000',
     activeOpacity: 1,
     visible: false,
-  };
+    statusBarAutoHidden: true,
+    animateWithContent: true,
+  }
 
   state = {
     animating: false,
     visible: false,
-  };
+  }
 
   shounldComponentUpdate() {
     return this.state.animating ? false : true
@@ -59,7 +66,7 @@ export default class AnimatableOverlay extends Component {
     }
   }
 
-  handleAnimationStart = () => {
+  handleAnimationBegin = () => {
     this.setState({
       animating: true,
     })
@@ -96,13 +103,16 @@ export default class AnimatableOverlay extends Component {
 
     let {
       top,
+      right,
       bottom,
+      left,
       children,
       backgroundColor,
       activeOpacity,
       visible,
       showAnimation,
       hideAnimation,
+      animateWithContent,
     } = this.props
 
     if (!visible
@@ -122,22 +132,40 @@ export default class AnimatableOverlay extends Component {
       }
     }
 
-    return (
-      <TouchableOpacity
-        style={[styles.container, {top, bottom}]}
-        onPress={this.handlePress}
-        activeOpacity={activeOpacity}
-      >
+    if (animateWithContent) {
+      return (
         <Animatable.View
-          ref="view"
-          style={[styles.container, {backgroundColor}]}
-          onAnimationStart={this.handleAnimationStart}
-          onAnimationEnd={this.handleAnimationEnd}
           {...animation}
+          style={[styles.container, {backgroundColor, top, right, bottom, left}]}
+          onAnimationBegin={this.handleAnimationBegin}
+          onAnimationEnd={this.handleAnimationEnd}
         >
+          <TouchableOpacity
+            activeOpacity={activeOpacity}
+            onPress={this.handlePress}
+            style={styles.container}
+          />
           {children}
         </Animatable.View>
-      </TouchableOpacity>
+      )
+    }
+
+    return (
+      <View style={[styles.container, {top, right, bottom, left}]}>
+        <TouchableOpacity
+          activeOpacity={activeOpacity}
+          onPress={this.handlePress}
+          style={styles.container}
+        >
+          <Animatable.View
+            {...animation}
+            style={[styles.container, {backgroundColor}]}
+            onAnimationBegin={this.handleAnimationBegin}
+            onAnimationEnd={this.handleAnimationEnd}
+          />
+        </TouchableOpacity>
+        {children}
+      </View>
     )
 
   }
