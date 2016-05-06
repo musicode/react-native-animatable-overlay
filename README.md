@@ -24,14 +24,9 @@ npm install --save react-native-animatable-overlay
 
 ```jsx
 <Overlay
-  top={0}
-  right={0}
-  bottom={0}
-  left={0}
-  backgroundColor="#000"
+  style={{backgroundColor: ''}}
   activeOpacity={1}
   statusBarAutoHidden={true}
-  animateWithContent={true}
   visible={this.state.visible}
   onPress={() => {
     this.setState({

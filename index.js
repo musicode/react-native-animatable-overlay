@@ -24,30 +24,20 @@ const styles = StyleSheet.create({
 export default class AnimatableOverlay extends Component {
 
   static propTypes = {
-    top: PropTypes.number,
-    right: PropTypes.number,
-    bottom: PropTypes.number,
-    left: PropTypes.number,
-    backgroundColor: PropTypes.string,
+    style: View.propTypes.style,
     activeOpacity: PropTypes.number,
     visible: PropTypes.bool,
     hideAnimation: PropTypes.object,
     showAnimation: PropTypes.object,
     statusBarAutoHidden: PropTypes.bool,
-    animateWithContent: PropTypes.bool,
     onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
   }
 
   static defaultProps = {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: '#000',
     activeOpacity: 1,
     visible: false,
     statusBarAutoHidden: true,
-    animateWithContent: true,
   }
 
   state = {
@@ -63,6 +53,13 @@ export default class AnimatableOverlay extends Component {
     let { onPress } = this.props
     if (typeof onPress === 'function') {
       onPress()
+    }
+  }
+
+  handleLongPress = () => {
+    let { onLongPress } = this.props
+    if (typeof onLongPress === 'function') {
+      onLongPress()
     }
   }
 
@@ -102,17 +99,12 @@ export default class AnimatableOverlay extends Component {
   render() {
 
     let {
-      top,
-      right,
-      bottom,
-      left,
       children,
-      backgroundColor,
       activeOpacity,
       visible,
+      style,
       showAnimation,
       hideAnimation,
-      animateWithContent,
     } = this.props
 
     if (!visible
@@ -132,40 +124,21 @@ export default class AnimatableOverlay extends Component {
       }
     }
 
-    if (animateWithContent) {
-      return (
-        <Animatable.View
-          {...animation}
-          style={[styles.container, {backgroundColor, top, right, bottom, left}]}
-          onAnimationBegin={this.handleAnimationBegin}
-          onAnimationEnd={this.handleAnimationEnd}
-        >
-          <TouchableOpacity
-            activeOpacity={activeOpacity}
-            onPress={this.handlePress}
-            style={styles.container}
-          />
-          {children}
-        </Animatable.View>
-      )
-    }
-
     return (
-      <View style={[styles.container, {top, right, bottom, left}]}>
+      <Animatable.View
+        {...animation}
+        style={[styles.container, style]}
+        onAnimationBegin={this.handleAnimationBegin}
+        onAnimationEnd={this.handleAnimationEnd}
+      >
         <TouchableOpacity
           activeOpacity={activeOpacity}
           onPress={this.handlePress}
+          onLongPress={this.handleLongPress}
           style={styles.container}
-        >
-          <Animatable.View
-            {...animation}
-            style={[styles.container, {backgroundColor}]}
-            onAnimationBegin={this.handleAnimationBegin}
-            onAnimationEnd={this.handleAnimationEnd}
-          />
-        </TouchableOpacity>
+        />
         {children}
-      </View>
+      </Animatable.View>
     )
 
   }
