@@ -1,5 +1,11 @@
 # react-native-animatable-overlay
 
+## Installation
+
+```shell
+npm install --save react-native-animatable-overlay
+```
+
 ## Animation
 
 动画借用了 [react-native-animatable](https://github.com/oblador/react-native-animatable#properties)。
