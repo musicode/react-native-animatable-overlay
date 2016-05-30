@@ -2,12 +2,12 @@
 
 import React, {
   Component,
+  PropTypes,
 } from 'react'
 
 import {
-  StyleSheet,
-  PropTypes,
   View,
+  StyleSheet,
   StatusBar,
   TouchableOpacity,
 } from 'react-native'

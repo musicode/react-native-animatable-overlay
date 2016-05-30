@@ -1,6 +1,6 @@
 {
   "name": "react-native-animatable-overlay",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "react native overlay",
   "main": "index.js",
   "scripts": {
