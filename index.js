@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 
-import Animatable from 'react-native-animatable'
+import * as Animatable from 'react-native-animatable'
 
 const styles = StyleSheet.create({
   container: {
