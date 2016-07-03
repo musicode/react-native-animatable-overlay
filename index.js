@@ -113,7 +113,7 @@ export default class AnimatableOverlay extends Component {
     if (!visible
       && !this.state.visible
     ) {
-      return <View />
+      return null
     }
 
     let animation = visible
